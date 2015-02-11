@@ -208,15 +208,29 @@
     <script src="js/bootstrap.min.js"></script>
     
     <script>
-    $('input').on('keypress', function() {
+           $(function() {
+            var delay,
+                produit =  $('#produit'),
+                cards = $('.card');
 
-    var valProduit = $('#produit').val();
-    
-    var dataProduit = (valProduit == '') ? '' : '[data-produit="'+valProduit +'"]';
-    
-    $(".card").hide();
-    $("div"+dataProduit).show();
-});
+            produit.on('keyup', function() {
+                if (delay) {
+                    clearTimeout(delay);
+                }
+
+                delay = setTimeout(function() {
+                    var valProduit = produit.val();
+                    var dataProduit = (valProduit == '') ? '' : '[data-produit*="' + valProduit.toLowerCase() + '"]';
+
+                    if (valProduit) {
+                        cards.not('.card' + dataProduit).fadeOut();
+                        cards.filter(dataProduit).fadeIn()
+                    } else {
+                        cards.fadeIn();
+                    }
+                }, 10);
+            });
+        });
     </script>
   </body>
 </html>
